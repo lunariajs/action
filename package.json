@@ -1,0 +1,45 @@
+{
+  "name": "@lunariajs/action",
+  "type": "module",
+  "version": "0.1.0",
+  "private": "true",
+  "description": "Lunaria GitHub Action",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Yan Thomas",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunariajs/action"
+  },
+  "bugs": "https://github.com/lunariajs/action/issues",
+  "scripts": {
+    "build": "pkgroll --target=node20 --minify",
+    "format": "prettier --cache .",
+    "lint": "tsc",
+    "version": "pnpm changeset version && pnpm i --no-frozen-lockfile"
+  },
+  "devDependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@592e4ff",
+    "markdown-table": "^3.0.3"
+  },
+  "dependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.11.16",
+    "pkgroll": "^2.0.1",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.7.6"
+}
