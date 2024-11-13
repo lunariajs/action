@@ -103,20 +103,20 @@ async function getTrackedFilesTable(
 		};
 
 		const fileStatus = await lunaria.getFileStatus(rootlessFilename);
-		const isSourceLocale = fileStatus.source.path !== rootlessFilename;
+		const isSourceFile = fileStatus.source.path === rootlessFilename;
 
 		const createdDate = new Date(pullRequest.created_at);
 		// Don't go after the latest source change if the source file is part of the PR, assume creation date of PR.
 		// If it wasn't possible to find the latest source change date, we assume it isn't possibly outdated.
 		const latestSourceChange =
-				!isSourceLocale
+				!isSourceFile
 				? new Date(fileStatus.source.git.latestTrackedChange.date)
 				: createdDate;
 
 		if (latestSourceChange > createdDate) foundWarnings.push('outdated');
 
 		const warningIcons = foundWarnings.map((k) => warnings[k].icon).join(' ');
-		const key = `${isSourceLocale ? 'source' : 'localization'}-${statusType(file.status)}` as const;
+		const key = `${isSourceFile ? 'source' : 'localization'}-${statusType(file.status)}` as const;
 		const note = `${notes[key]} ${warningIcons}`;
 
 		rows.push([`[${collapsedPath}](${file.blob_url})`, note]);
