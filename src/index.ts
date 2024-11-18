@@ -103,13 +103,13 @@ async function getTrackedFilesTable(
 		};
 
 		const fileStatus = await lunaria.getFileStatus(rootlessFilename);
-		const isSourceFile = fileStatus.source.path === rootlessFilename;
+		const isSourceFile = fileStatus?.source?.path === rootlessFilename;
 
 		const createdDate = new Date(pullRequest.created_at);
 		// Don't go after the latest source change if the source file is part of the PR, assume creation date of PR.
 		// If it wasn't possible to find the latest source change date, we assume it isn't possibly outdated.
 		const latestSourceChange =
-				!isSourceFile
+				!isSourceFile && fileStatus
 				? new Date(fileStatus.source.git.latestTrackedChange.date)
 				: createdDate;
 
