@@ -109,8 +109,8 @@ async function getTrackedFilesTable(
 		// Don't go after the latest source change if the source file is part of the PR, assume creation date of PR.
 		// If it wasn't possible to find the latest source change date, we assume it isn't possibly outdated.
 		const latestSourceChange =
-				!isSourceFile && fileStatus
-				? new Date(fileStatus.source.git.latestTrackedChange.date)
+			!isSourceFile && fileStatus
+				? new Date(fileStatus.source.git.latestTrackedCommit.date)
 				: createdDate;
 
 		if (latestSourceChange > createdDate) foundWarnings.push('outdated');
@@ -177,7 +177,7 @@ async function main() {
 	);
 
 	const trackedFiles = pullRequestFiles.filter((file) =>
-		lunaria.findFileConfig(unrootFilename(config.repository.rootDir, file.filename))
+		lunaria.findFilesEntry(unrootFilename(config.repository.rootDir, file.filename))
 	);
 
 	if (!trackedFiles.length) {
