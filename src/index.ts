@@ -6,6 +6,7 @@ import { markdownTable } from 'markdown-table';
 import {
 	body,
 	commentSummary,
+	deleteExistingComment,
 	notes,
 	overviewTracked,
 	overviewUntracked,
@@ -167,6 +168,9 @@ async function main() {
 
 	if (!trackedFiles.length) {
 		core.notice("This pull request doesn't include any tracked files.");
+		// Remove any previous summary so it doesn't go stale if all tracked files were removed.
+		// If tracked files are added again later, a fresh comment will be created.
+		await deleteExistingComment(octokit, pullRequestContext);
 		return;
 	}
 

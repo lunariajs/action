@@ -101,6 +101,20 @@ export async function commentSummary(
 	});
 }
 
+export async function deleteExistingComment(
+	octokit: Octokit,
+	issue: { repo: string; owner: string; issue_number: number }
+) {
+	const existingCommentId = await findExistingCommentId(octokit, issue);
+
+	if (existingCommentId) {
+		return octokit.rest.issues.deleteComment({
+			...issue,
+			comment_id: existingCommentId,
+		});
+	}
+}
+
 export async function findExistingCommentId(
 	octokit: Octokit,
 	issue: { repo: string; owner: string; issue_number: number }
