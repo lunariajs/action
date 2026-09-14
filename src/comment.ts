@@ -15,7 +15,7 @@ export const overviewTracked = `
 
 By default, every PR changing files present in the [Lunaria configuration's \`files\` property](https://lunaria.dev/reference/configuration/#files-required) will be considered and trigger status changes accordingly.
 
-You can change this by adding one of the keywords present in the [\`ignoreKeywords\` property in your Lunaria configuration file](https://lunaria.dev/reference/configuration/#ignorekeywords) in the PR's title (ignoring all files) or by [including a tracker directive](https://lunaria.dev/guides/tracking/#tracker-directives) in the merged commit's description. 
+You can change this by adding one of the keywords present in the [\`tracking.ignoredKeywords\` property in your Lunaria configuration file](https://lunaria.dev/reference/configuration/#trackingignoredkeywords) in the PR's title (ignoring all files) or by [including a tracker directive](https://lunaria.dev/guides/tracking/#triggering-changes-per-file) in the merged commit's description. 
 </details>`;
 
 export const overviewUntracked = (match: string) => `
@@ -26,7 +26,7 @@ export const overviewUntracked = (match: string) => `
 
 Lunaria automatically ignores changes on specific PRs by adding a ignored keyword in its title. Found: \`${match}\`.
 
-You can change this by either removing the keyword above from the PR's title, or modifying the [\`ignoreKeywords\` property in your Lunaria configuration file](https://lunaria.dev/reference/configuration/#ignorekeywords).
+You can change this by either removing the keyword above from the PR's title, or modifying the [\`tracking.ignoredKeywords\` property in your Lunaria configuration file](https://lunaria.dev/reference/configuration/#trackingignoredkeywords).
 </details>`;
 
 export const tableIgnoredWarning = `

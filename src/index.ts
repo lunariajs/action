@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { createLunaria } from '@lunariajs/core';
+import { getCollapsedPath } from '@lunariajs/core/dashboard';
 import { markdownTable } from 'markdown-table';
 import {
 	body,
@@ -33,24 +34,6 @@ function setWorkingDirectory(workingDirectory?: string) {
 }
 
 /**
- * Collapses a filename to only its non-base part.
- */
-function collapseFilename(filename: string) {
-	const basesToHide = ["src/content/docs/", "src/i18n/"];
-
-	if (!basesToHide) return filename;
-
-	for (const base of basesToHide) {
-		const newFilename = filename.replace(base, '');
-
-		if (newFilename === filename) continue;
-		return newFilename;
-	}
-
-	return filename;
-}
-
-/**
  * Removes the root directory of a given filename.
  * This is necessary since Lunaria's glob patterns are based on the cwd
  * and won't account for the root directory by default.
@@ -63,9 +46,11 @@ function unrootFilename(root: string, filename: string) {
 	return filename;
 }
 
-function getStatusOverview(title: string, ignoreKeywords: string[]) {
-	const IGNORE_KEYWORDS = new RegExp(`(${ignoreKeywords.join('|')})`, 'i');
-	const match = title.match(IGNORE_KEYWORDS)?.at(0);
+function getStatusOverview(title: string, ignoredKeywords: string[]) {
+	const match =
+		ignoredKeywords.length > 0
+			? title.match(new RegExp(`(${ignoredKeywords.join('|')})`, 'i'))?.at(0)
+			: undefined;
 
 	return {
 		overview: match ? overviewUntracked(match) : overviewTracked,
@@ -79,14 +64,14 @@ async function getTrackedFilesTable(
 	lunaria: LunariaInstance,
 	isIgnored: boolean
 ) {
-	const { repository } = lunaria.config;
+	const { repository, dashboard } = lunaria.config;
 	const rows: string[][] = [];
 
 	for (const file of trackedFiles) {
 		const foundWarnings: Array<keyof typeof warnings> = [];
 
 		const rootlessFilename = unrootFilename(repository.rootDir, file.filename);
-		const collapsedPath = collapseFilename(rootlessFilename);
+		const collapsedPath = getCollapsedPath(dashboard, rootlessFilename);
 
 		const statusType = (status: Files[number]['status']) => {
 			// It might be necessary to rethink these according to how Git
@@ -185,7 +170,10 @@ async function main() {
 		return;
 	}
 
-	const { overview, isIgnored } = getStatusOverview(pullRequest.title, config.tracking.ignoredKeywords);
+	const { overview, isIgnored } = getStatusOverview(
+		pullRequest.title,
+		config.tracking.ignoredKeywords
+	);
 	const trackedFilesTable = await getTrackedFilesTable(
 		pullRequest,
 		trackedFiles,
