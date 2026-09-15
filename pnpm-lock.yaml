@@ -37,6 +37,9 @@ devDependencies:
   '@lunariajs/core':
     specifier: ^0.2.0
     version: 0.2.0
+  jiti:
+    specifier: ^2.7.0
+    version: 2.7.0
   markdown-table:
     specifier: ^3.0.3
     version: 3.0.3
