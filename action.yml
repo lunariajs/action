@@ -3,7 +3,7 @@ description: A GitHub Action to overview a pull request's status changes with Lu
 author: Yan Thomas
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.mjs
 
 inputs:
