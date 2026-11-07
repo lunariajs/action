@@ -192,8 +192,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.1
       '@lunariajs/core':
-        specifier: ^0.2.0
-        version: 0.2.1
+        specifier: ^0.3.0
+        version: 0.3.0
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
@@ -533,8 +533,8 @@ packages:
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
-  '@lunariajs/core@0.2.1':
-    resolution: {integrity: sha512-TSqlYWJM8XiiSLit7UlPI4hQq0gpX5g4f5L89/XsVvef+EPX3mp5J+JFFMN+M2Mzjof//duKx0xjGIKcNXiNQA==}
+  '@lunariajs/core@0.3.0':
+    resolution: {integrity: sha512-Bm9wNvUW1mvnTnGyDKkafUISKRSqbxn1qSENFHW9s14quyygLAPOH+L5bi688Cx69vpw0EtK1zgkoMKX5bnBjg==}
     engines: {node: '>=18.17.0'}
     hasBin: true
 
@@ -930,8 +930,8 @@ packages:
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
-  gettext-parser@9.1.1:
-    resolution: {integrity: sha512-ZLeqWPz9OMNrTgMuww0C22kkcNqis+e4059R94t7L7ERlZ2rUNpiDbaAUus+esBC6uBAQWbS9N+R5vJIJg//lw==}
+  gettext-parser@10.0.0:
+    resolution: {integrity: sha512-hELgK4pFrOrqFiUOo4GQ6kFg0ywhlEJXN6R22cgZ1dxzZj9LUXA2NnwmyoUqxLyunm0yrSPwd6fA5bNqjuvmYA==}
     engines: {node: '>=20'}
 
   glob-parent@5.1.2:
@@ -1028,9 +1028,6 @@ packages:
 
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
-
-  path-to-regexp@6.3.0:
-    resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -1448,14 +1445,13 @@ snapshots:
 
   '@kwsites/promise-deferred@1.1.1': {}
 
-  '@lunariajs/core@0.2.1':
+  '@lunariajs/core@0.3.0':
     dependencies:
       consola: 3.4.2
-      gettext-parser: 9.1.1
+      gettext-parser: 10.0.0
       jiti: 2.7.0
       neotraverse: 1.0.1
       p-all: 5.0.1
-      path-to-regexp: 6.3.0
       picomatch: 4.0.7
       simple-git: 4.0.2
       tinyglobby: 0.2.17
@@ -1796,7 +1792,7 @@ snapshots:
 
   function-bind@1.1.2: {}
 
-  gettext-parser@9.1.1:
+  gettext-parser@10.0.0:
     dependencies:
       content-type: 1.0.5
       encoding: 0.1.14
@@ -1880,8 +1876,6 @@ snapshots:
   package-manager-detector@1.9.0: {}
 
   path-parse@1.0.7: {}
-
-  path-to-regexp@6.3.0: {}
 
   picocolors@1.1.1: {}
 
