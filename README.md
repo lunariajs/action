@@ -15,4 +15,3 @@ Lunaria is a free and open-source software (FOSS) maintaned thanks to community 
     <img src='https://cdn.jsdelivr.net/gh/yanthomasdev/static/sponsorkit/sponsors.svg'/>
   </a>
 </p>
-
