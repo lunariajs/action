@@ -27,7 +27,7 @@ function setWorkingDirectory(workingDirectory?: string) {
 			process.chdir(workingDirectory);
 		} catch {
 			core.setFailed(
-				`Failed to change working directory to ${workingDirectory}. Is the path correct?`
+				`Failed to change working directory to ${workingDirectory}. Is the path correct?`,
 			);
 			process.exit(1);
 		}
@@ -63,7 +63,7 @@ async function getTrackedFilesTable(
 	pullRequest: PullRequest,
 	trackedFiles: Files,
 	lunaria: LunariaInstance,
-	isIgnored: boolean
+	isIgnored: boolean,
 ) {
 	const { repository, dashboard } = lunaria.config;
 	const rows: string[][] = [];
@@ -159,11 +159,11 @@ async function main() {
 			...pullRequestContext,
 			per_page: 100,
 		},
-		(response) => response.data
+		(response) => response.data,
 	);
 
 	const trackedFiles = pullRequestFiles.filter((file) =>
-		lunaria.findFilesEntry(unrootFilename(config.repository.rootDir, file.filename))
+		lunaria.findFilesEntry(unrootFilename(config.repository.rootDir, file.filename)),
 	);
 
 	if (!trackedFiles.length) {
@@ -176,13 +176,13 @@ async function main() {
 
 	const { overview, isIgnored } = getStatusOverview(
 		pullRequest.title,
-		config.tracking.ignoredKeywords
+		config.tracking.ignoredKeywords,
 	);
 	const trackedFilesTable = await getTrackedFilesTable(
 		pullRequest,
 		trackedFiles,
 		lunaria,
-		isIgnored
+		isIgnored,
 	);
 
 	await commentSummary(octokit, pullRequestContext, body(overview, trackedFilesTable));

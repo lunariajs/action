@@ -37,7 +37,7 @@ export const tableIgnoredWarning = `
 export const trackedFilesDetails = (
 	filesTable: string,
 	warningsTable: string,
-	isIgnored: boolean
+	isIgnored: boolean,
 ) => `
 ${isIgnored ? tableIgnoredWarning : ''}
 
@@ -83,7 +83,7 @@ ${trackedFiles}`;
 export async function commentSummary(
 	octokit: Octokit,
 	issue: { repo: string; owner: string; issue_number: number },
-	body: string
+	body: string,
 ) {
 	const existingCommentId = await findExistingCommentId(octokit, issue);
 
@@ -103,7 +103,7 @@ export async function commentSummary(
 
 export async function deleteExistingComment(
 	octokit: Octokit,
-	issue: { repo: string; owner: string; issue_number: number }
+	issue: { repo: string; owner: string; issue_number: number },
 ) {
 	const existingCommentId = await findExistingCommentId(octokit, issue);
 
@@ -117,7 +117,7 @@ export async function deleteExistingComment(
 
 export async function findExistingCommentId(
 	octokit: Octokit,
-	issue: { repo: string; owner: string; issue_number: number }
+	issue: { repo: string; owner: string; issue_number: number },
 ) {
 	const comments = await octokit.paginate(octokit.rest.issues.listComments, {
 		...issue,

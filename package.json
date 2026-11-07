@@ -25,9 +25,9 @@
   "bugs": "https://github.com/lunariajs/action/issues",
   "scripts": {
     "build": "pkgroll --target=node24 --minify",
-    "format": "prettier --cache .",
+    "format": "biome check --write",
     "lint": "tsc",
-    "version": "pnpm changeset version && pnpm i --no-frozen-lockfile",
+    "version": "pnpm changeset version && pnpm i --no-frozen-lockfile && pnpm format",
     "release": "node scripts/release.ts"
   },
   "devDependencies": {
@@ -38,12 +38,11 @@
     "markdown-table": "^3.0.3"
   },
   "dependencies": {
+    "@biomejs/biome": "2.6.6",
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@types/node": "^24.19.2",
     "pkgroll": "^2.0.1",
-    "prettier": "^3.2.5",
-    "prettier-plugin-organize-imports": "^3.2.4",
     "typescript": "^5.3.3"
   },
   "packageManager": "pnpm@12.18.0"
