@@ -13,7 +13,7 @@ import {
 	trackedFilesDetails,
 	warnings,
 } from './comment.js';
-import type { Files, PullRequest } from './types.js';
+import type { Files, Octokit, PullRequest, WorkflowRun } from './types.js';
 
 type LunariaInstance = Awaited<ReturnType<typeof createLunaria>>;
 
@@ -117,17 +117,50 @@ async function getTrackedFilesTable(
 	return trackedFilesDetails(filesTable, warningsTable, isIgnored);
 }
 
-async function main() {
-	const context = github.context;
-	const payload = context.payload;
+/**
+ * Gets the pull request number from the event, or from the triggering `pull_request`
+ * workflow when running on `workflow_run`.
+ */
+async function getPullRequestNumber(octokit: Octokit) {
+	const { eventName, payload, repo } = github.context;
+
+	if (eventName === 'workflow_run') {
+		const run = payload.workflow_run as WorkflowRun | undefined;
+
+		if (run?.event !== 'pull_request') {
+			core.notice('Skipped, the workflow run was not triggered by a pull request.');
+			return;
+		}
+
+		if (run.conclusion !== 'success') {
+			core.notice(`Skipped, the triggering workflow run didn't succeed (${run.conclusion}).`);
+			return;
+		}
+
+		if (!run.head_repository || !run.head_branch) {
+			core.notice('Skipped, could not find the head branch of the workflow run.');
+			return;
+		}
+
+		// `workflow_run.pull_requests` is empty for pull requests from forks.
+		const { data: pullRequests } = await octokit.rest.pulls.list({
+			...repo,
+			state: 'open',
+			head: `${run.head_repository.owner.login}:${run.head_branch}`,
+		});
+
+		const pullRequest = pullRequests.find((pr) => pr.head.sha === run.head_sha);
+
+		if (!pullRequest) {
+			core.notice(`Skipped, could not find an open pull request for commit ${run.head_sha}.`);
+			return;
+		}
+
+		return pullRequest.number;
+	}
 
 	if (!payload.pull_request) {
 		core.notice('Skipped, could not find the pull request context.');
-		return;
-	}
-
-	if (!payload.repository) {
-		core.notice('Skipped, could not find pull request repository.');
 		return;
 	}
 
@@ -136,8 +169,14 @@ async function main() {
 		return;
 	}
 
-	const githubToken = core.getInput('token');
-	const octokit = github.getOctokit(githubToken);
+	return payload.pull_request.number;
+}
+
+async function main() {
+	const octokit = github.getOctokit(core.getInput('token'));
+
+	const pullRequestNumber = await getPullRequestNumber(octokit);
+	if (pullRequestNumber === undefined) return;
 
 	const workingDirectory = core.getInput('working-directory');
 	setWorkingDirectory(workingDirectory);
@@ -146,9 +185,9 @@ async function main() {
 	const config = lunaria.config;
 
 	const pullRequestContext = {
-		...context.repo,
-		pull_number: payload.pull_request.number,
-		issue_number: payload.pull_request.number,
+		...github.context.repo,
+		pull_number: pullRequestNumber,
+		issue_number: pullRequestNumber,
 	};
 
 	const { data: pullRequest } = await octokit.rest.pulls.get(pullRequestContext);
