@@ -1,5 +1,11 @@
 # @lunariajs/action
 
+## 0.4.0
+
+### Minor Changes
+
+- [#5](https://github.com/lunariajs/action/pull/5) [`a6edda9`](https://github.com/lunariajs/action/commit/a6edda9f1e256b88d453bd457917d47352446279) Thanks [@yanthomasdev](https://github.com/yanthomasdev)! - Updates the action to use Lunaria v0.3.
+
 ## 0.3.0
 
 ### Minor Changes
